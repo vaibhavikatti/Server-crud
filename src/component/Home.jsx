@@ -1,4 +1,5 @@
 import React from 'react'
+import Categories from './screens/Categories'
 
 
 function Home(props){
@@ -8,6 +9,7 @@ function Home(props){
                 <div className="col-md-12 text-center">
                     <h3 className="display-3 text-success">
                         Home
+                        <Categories/>
                     </h3>
                 </div>
             </div>

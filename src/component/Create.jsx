@@ -1,25 +1,35 @@
 import React,{useState} from 'react'
 import {toast} from 'react-toastify'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
+
+const URL = "https://dummyjson.com"
 
 function Create(props){
     const[product,setProduct]=useState({
         title:'',
-        price:'',
+        price:'0',
         description:''
     })
+
+    const navigate = useNavigate() // used for redirecting path inside logics
 
     const readValue=(e)=>{
         const{name, value} =e.target;
         setProduct({
-            ...product,[name]:value
-        })
+            ...product, [name]:value})
     }
 
-    const submitHandler =async(e)=>{
+    const submitHandler = async(e)=>{
         e.preventDefault();
         try {
             console.log('new product',product) 
+            await axios.post(`${URL}/products/add`, product)
+            .then(res=>{
+                toast.success("New product added successfully")
+                navigate(`/`)
+            }).catch( err => toast.error(err.message))
         } catch(err)  {
             toast.error(err.essage)
         }
