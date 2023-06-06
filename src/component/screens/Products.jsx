@@ -1,7 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import {toast} from 'react-toastify'
 import axios from 'axios'
-import { useParams , NavLink } from 'react-router-dom'
+import { useParams , NavLink, useNavigate } from 'react-router-dom'
 
 const URL="https://dummyjson.com"
 
@@ -24,6 +24,21 @@ function Products(props){
     useEffect(()=>{
         getProducts()
     },[])
+
+    const navigate = useNavigate()
+
+    const deleteHandler = async(id)=>{
+        if(window.confirm(`are you sure to delete${id}?`)){
+            await axios.delete(`${URL}/products/${id}`)
+            .then(res=>{
+                toast.success(`Product id ${id} deleted successfully`)
+                navigate(`/`)
+            }).catch(err=>toast.error(err.message))
+        }else{
+            toast.warning(`deleted successfully`)
+        }
+
+    }
     return(
         <div className="container">
             <div className="row">
@@ -52,7 +67,7 @@ function Products(props){
 
                                     <div className="card-footer">
                                         <NavLink to={`/update/${id}`} className={"btn btn-sm btn-info"}> <i className="bi bi-pencil"></i> </NavLink>
-                                        <button className="btn btn-sm btn-danger float-end">
+                                        <button onClick={()=>{deleteHandler(id)}} className="btn btn-sm btn-danger float-end">
                                             <i className="bi bi-trash"></i>
                                         </button>
                                     </div>
